@@ -12,6 +12,18 @@ dist
 dist-ssr
 *.local
 
+# Variáveis de ambiente — nunca commitar o .env real
+.env
+.env.local
+.env.*.local
+
+# Playwright
+playwright-report/
+test-results/
+
+# Coverage
+coverage/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
