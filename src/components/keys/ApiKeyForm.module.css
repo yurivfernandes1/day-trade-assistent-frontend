@@ -1,0 +1,67 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field label {
+  font-size: 0.875rem;
+  color: var(--color-muted, #aaa);
+}
+
+.field input,
+.field select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border, #333);
+  border-radius: 4px;
+  background: var(--color-input, #0f0f1a);
+  color: inherit;
+  font-size: 1rem;
+}
+
+.field input[aria-invalid='true'],
+.field select[aria-invalid='true'] {
+  border-color: var(--color-danger, #e74c3c);
+}
+
+.error {
+  font-size: 0.8rem;
+  color: var(--color-danger, #e74c3c);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.cancel {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border, #333);
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.submit {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--color-primary, #4361ee);
+  color: #fff;
+  cursor: pointer;
+}
+
+.submit:disabled,
+.cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

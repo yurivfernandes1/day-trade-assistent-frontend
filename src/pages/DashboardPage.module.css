@@ -1,0 +1,45 @@
+.page {
+  min-height: 100vh;
+  background: var(--color-bg, #0f0f1a);
+  color: var(--color-text, #e0e0e0);
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border, #333);
+  padding-bottom: 1rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav a {
+  color: var(--color-primary, #4361ee);
+  text-decoration: none;
+}
+
+.signOut {
+  background: none;
+  border: 1px solid var(--color-border, #333);
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.welcome {
+  color: var(--color-muted, #aaa);
+}
