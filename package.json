@@ -71,13 +71,19 @@
       "./functions/rule_engine/": {
         "lines": 90,
         "branches": 90
+      },
+      "./services/news/": {
+        "lines": 90,
+        "branches": 90
       }
     },
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
       "functions/rule_engine/**/*.js",
+      "services/**/*.js",
       "!src/main.jsx",
-      "!functions/rule_engine/*.test.js"
+      "!functions/rule_engine/*.test.js",
+      "!services/**/*.test.js"
     ]
   }
 }

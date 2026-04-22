@@ -12,10 +12,18 @@ dist
 dist-ssr
 *.local
 
-# Variáveis de ambiente — nunca commitar o .env real
+# Variáveis de ambiente — nunca commitar segredos
 .env
 .env.local
 .env.*.local
+.env.test
+.env.test.local
+
+# Certificados e chaves privadas
+*.pem
+*.key
+*.p12
+.secrets/
 
 # Playwright
 playwright-report/
