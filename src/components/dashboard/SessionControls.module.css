@@ -1,0 +1,92 @@
+.newSession {
+  background: var(--color-surface, #1a1a2e);
+  border: 1px solid var(--color-border, #333);
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 480px;
+}
+
+.title {
+  font-size: 1.1rem;
+  margin: 0 0 1.25rem;
+  color: var(--color-text, #e0e0e0);
+}
+
+.activeSession {
+  background: var(--color-surface, #1a1a2e);
+  border: 1px solid var(--color-border, #333);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 480px;
+}
+
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--color-text, #e0e0e0);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dotActive {
+  background: #2dc653;
+  box-shadow: 0 0 6px #2dc65399;
+}
+
+.goals {
+  margin: 0;
+  display: flex;
+  gap: 2rem;
+}
+
+.goalItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.goalItem dt {
+  font-size: 0.75rem;
+  color: var(--color-muted, #aaa);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.goalItem dd {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text, #e0e0e0);
+}
+
+.stopBtn {
+  background: var(--color-danger, #e63946);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  width: fit-content;
+  transition: opacity 0.15s;
+}
+
+.stopBtn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.stopBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

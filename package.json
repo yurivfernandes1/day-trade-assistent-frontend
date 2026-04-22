@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:unit": "node --experimental-vm-modules node_modules/.bin/jest --testPathPattern='(auth|keys).*\\.unit\\.test' --coverage",
+    "test:unit": "node --experimental-vm-modules node_modules/.bin/jest --testPathPattern='\\.(unit)\\.test' --coverage",
     "test:integration": "node --experimental-vm-modules node_modules/.bin/jest --testPathPattern='\\.integration\\.test' --coverage",
     "test:e2e": "playwright test",
     "test:all": "npm run test:unit && npm run test:integration && npm run test:e2e"
@@ -20,6 +20,8 @@
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
     "@eslint/js": "^9.39.4",
     "@playwright/test": "^1.44.1",
     "@testing-library/jest-dom": "^6.4.6",
@@ -58,7 +60,7 @@
     },
     "setupFilesAfterEach": [],
     "setupFilesAfterFramework": [],
-    "setupFiles": [
+    "setupFilesAfterEnv": [
       "<rootDir>/tests/setup.js"
     ],
     "coverageThreshold": {

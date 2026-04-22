@@ -42,4 +42,20 @@
 
 .welcome {
   color: var(--color-muted, #aaa);
+  margin-bottom: 2rem;
+}
+
+.sessionSection {
+  margin-top: 0.5rem;
+}
+
+.sessionLoading {
+  color: var(--color-muted, #aaa);
+  font-size: 0.9rem;
+}
+
+.sessionError {
+  color: var(--color-danger, #e63946);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
 }
