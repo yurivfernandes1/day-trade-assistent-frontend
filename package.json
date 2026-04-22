@@ -67,11 +67,17 @@
       "global": {
         "lines": 80,
         "branches": 80
+      },
+      "./functions/rule_engine/": {
+        "lines": 90,
+        "branches": 90
       }
     },
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
-      "!src/main.jsx"
+      "functions/rule_engine/**/*.js",
+      "!src/main.jsx",
+      "!functions/rule_engine/*.test.js"
     ]
   }
 }
