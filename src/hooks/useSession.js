@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { SESSION_STATUS } from '../lib/sessions';
+import { appendAuditEvent, AUDIT_EVENT_TYPE } from '../lib/auditLog';
 
 export function useSession() {
   const [activeSession, setActiveSession] = useState(null);
@@ -54,6 +55,15 @@ export function useSession() {
       return { success: false, error: insertError.message };
     }
     setActiveSession(data);
+    // Audit: sessão iniciada
+    appendAuditEvent(supabase, {
+      event_type: AUDIT_EVENT_TYPE.SESSION_STARTED,
+      user_id: data.user_id ?? 'unknown',
+      session_id: data.id,
+      entity_id: data.id,
+      entity_type: 'session',
+      payload: { mode, goal_type, goal_profit: Number(goal_profit), goal_loss: Number(goal_loss) },
+    }).catch(() => { /* audit failure não bloqueia o fluxo */ });
     return { success: true, session: data };
   }, []);
 
@@ -71,6 +81,15 @@ export function useSession() {
       setError(updateError.message);
       return { success: false, error: updateError.message };
     }
+    // Audit: sessão encerrada
+    appendAuditEvent(supabase, {
+      event_type: AUDIT_EVENT_TYPE.SESSION_STOPPED,
+      user_id: activeSession.user_id ?? 'unknown',
+      session_id: activeSession.id,
+      entity_id: activeSession.id,
+      entity_type: 'session',
+      payload: { stopped_at: new Date().toISOString() },
+    }).catch(() => { /* audit failure não bloqueia o fluxo */ });
     setActiveSession(null);
     return { success: true };
   }, [activeSession]);

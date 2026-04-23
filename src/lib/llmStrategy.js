@@ -6,6 +6,8 @@
  * A decisão final sempre fica com o usuário.
  */
 
+import { appendAuditEvent, AUDIT_EVENT_TYPE } from './auditLog.js';
+
 export const SUGGESTION_STATUS = Object.freeze({
   PENDING: 'pending',
   RECEIVED: 'received',
@@ -125,7 +127,7 @@ export async function requestStrategySuggestion({ supabase, context, llmConfig, 
     status = SUGGESTION_STATUS.ERROR;
   }
 
-  return persistSuggestion(supabase, {
+  const saved = await persistSuggestion(supabase, {
     session_id,
     user_id,
     symbol,
@@ -135,4 +137,25 @@ export async function requestStrategySuggestion({ supabase, context, llmConfig, 
     confidence: llmResult.confidence,
     status,
   });
+
+  // Audit: sugestão LLM registrada (não bloqueia o fluxo em caso de falha)
+  const auditEventType = status === SUGGESTION_STATUS.ERROR
+    ? AUDIT_EVENT_TYPE.LLM_SUGGESTION_ERROR
+    : AUDIT_EVENT_TYPE.LLM_SUGGESTION_RECEIVED;
+
+  appendAuditEvent(supabase, {
+    event_type: auditEventType,
+    user_id,
+    session_id,
+    entity_id: saved.id,
+    entity_type: 'llm_suggestion',
+    payload: {
+      symbol,
+      suggested_action: llmResult.suggestedAction,
+      confidence: llmResult.confidence,
+      status,
+    },
+  }).catch(() => { /* audit failure não bloqueia o fluxo */ });
+
+  return saved;
 }

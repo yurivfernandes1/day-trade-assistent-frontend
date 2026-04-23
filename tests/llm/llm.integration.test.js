@@ -222,4 +222,40 @@ describe('requestStrategySuggestion — integração completa', () => {
     expect(result).toHaveProperty('status', SUGGESTION_STATUS.ERROR);
     expect(mockOrdersSpy).not.toHaveBeenCalled();
   });
+
+  it('dispara evento de auditoria LLM_SUGGESTION_RECEIVED após sugestão bem-sucedida', async () => {
+    const fetchMock = makeFetchMock(validLLMResponse);
+    const auditInserts = [];
+    const auditAwareMock = {
+      from: jest.fn((table) => ({
+        insert: jest.fn((records) => {
+          if (table === 'audit_events') auditInserts.push(...records);
+          return {
+            select: () => ({
+              single: () =>
+                Promise.resolve({
+                  data: { id: table === 'audit_events' ? 'audit-1' : 'sug-2', status: SUGGESTION_STATUS.RECEIVED },
+                  error: null,
+                }),
+            }),
+          };
+        }),
+      })),
+    };
+
+    await requestStrategySuggestion({
+      supabase: auditAwareMock,
+      context: { session_id: 'sess-1', user_id: 'user-1', symbol: 'BTC/USDT', mode: 'paper' },
+      llmConfig: LLM_CONFIG,
+      fetchFn: fetchMock,
+    });
+
+    // Aguarda o evento de auditoria (é disparado de forma async com .catch)
+    await new Promise((r) => setTimeout(r, 0));
+
+    expect(auditInserts.length).toBeGreaterThan(0);
+    expect(auditInserts[0].event_type).toBe('llm.suggestion_received');
+    expect(auditInserts[0].user_id).toBe('user-1');
+    expect(auditInserts[0].entity_type).toBe('llm_suggestion');
+  });
 });

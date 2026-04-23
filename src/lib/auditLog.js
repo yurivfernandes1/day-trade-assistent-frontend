@@ -61,15 +61,15 @@ export async function listAuditEvents(supabase, { userId, sessionId, limit = 100
   let query = supabase
     .from('audit_events')
     .select('*')
-    .eq('user_id', userId)
-    .order('occurred_at', { ascending: false })
-    .limit(limit);
+    .eq('user_id', userId);
 
   if (sessionId) {
     query = query.eq('session_id', sessionId);
   }
 
-  const { data, error } = await query;
+  const { data, error } = await query
+    .order('occurred_at', { ascending: false })
+    .limit(limit);
   if (error) throw new Error(error.message);
   return data ?? [];
 }

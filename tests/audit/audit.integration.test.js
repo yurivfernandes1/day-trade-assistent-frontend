@@ -170,6 +170,23 @@ describe('listAuditEvents', () => {
     expect(results).toEqual([]);
   });
 
+  it('aplica filtro sessionId antes de order/limit (não quebra a chain)', async () => {
+    // Monta um mock que rastreia a ordem das chamadas na chain
+    const mockLimit = jest.fn().mockResolvedValue({ data: [], error: null });
+    const mockOrder = jest.fn().mockReturnValue({ limit: mockLimit });
+    const mockSessionEq = jest.fn().mockReturnValue({ order: mockOrder });
+    const mockUserEq = jest.fn().mockReturnValue({ order: mockOrder, eq: mockSessionEq });
+    const mockSelectQ = jest.fn().mockReturnValue({ eq: mockUserEq });
+    const supabase = { from: jest.fn(() => ({ select: mockSelectQ })) };
+
+    await listAuditEvents(supabase, { userId: 'u1', sessionId: 'sess-99' });
+
+    // sessionId filter foi aplicado antes de order/limit
+    expect(mockSessionEq).toHaveBeenCalledWith('session_id', 'sess-99');
+    expect(mockOrder).toHaveBeenCalledWith('occurred_at', { ascending: false });
+    expect(mockLimit).toHaveBeenCalledWith(100);
+  });
+
   it('propaga erro do Supabase', async () => {
     const { mockFrom } = makeSupabaseMock({ selectError: { message: 'DB error' } });
     const supabase = { from: mockFrom };
