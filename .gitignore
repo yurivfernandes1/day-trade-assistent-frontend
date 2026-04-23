@@ -18,6 +18,8 @@ dist-ssr
 .env.*.local
 .env.test
 .env.test.local
+.env.production
+.env.staging
 
 # Certificados e chaves privadas
 *.pem
