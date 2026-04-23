@@ -28,6 +28,12 @@ dist-ssr
 *.p12
 .secrets/
 
+# Supabase local development
+supabase/.branches/
+supabase/.temp/
+supabase/functions/.env
+supabase/seed.sql
+
 # Playwright
 playwright-report/
 test-results/

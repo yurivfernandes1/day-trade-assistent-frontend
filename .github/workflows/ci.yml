@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, master, develop]
   pull_request:
-    branches: [main, develop]
+    branches: [main, master, develop]
 
 jobs:
   lint:
@@ -77,3 +77,22 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  db-rls:
+    name: Testes RLS (US-F1)
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Executar testes de RLS
+        run: node --experimental-vm-modules node_modules/.bin/jest --testPathPattern='tests/db/rls' --coverage
+      - name: Upload coverage RLS
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-db-rls
+          path: coverage/
